@@ -7,6 +7,7 @@ import 'package:freshice/backend/api.dart';
 import 'package:freshice/frontend/addproduction.dart';
 import 'package:freshice/frontend/addsalesscreen.dart';
 import 'package:freshice/frontend/cloudsync.dart';
+import 'package:freshice/frontend/currentstock.dart';
 import 'package:freshice/frontend/customersscreen.dart';
 import 'package:freshice/frontend/inventoryscreen.dart';
 import 'package:freshice/frontend/notifications.dart';
@@ -380,74 +381,77 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          widget.userdetails["app_direct_sale"].toString() ==
-                                  "1"
-                              ? GestureDetector(
-                                  onTap: () {
-                                    slideRightWidget(
-                                        newPage: AddSalesScreen(
-                                          userid: widget.userdetails["userid"]
-                                              .toString(),
-                                        ),
-                                        context: context);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              10,
-                                      child: Card(
-                                        elevation: 10,
-                                        semanticContainer: true,
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                              child: FaIcon(
-                                                FontAwesomeIcons.fileCirclePlus,
-                                                color: API.appcolor,
-                                              ),
-                                            ),
-                                            Expanded(
-                                                child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8),
-                                              child: Text(
-                                                "Add Direct Sale",
-                                                style: TextStyle(
-                                                    color: API.textcolor,
-                                                    fontSize: 13,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            )),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20),
-                                              child: FaIcon(
-                                                FontAwesomeIcons.angleRight,
-                                                color: API.appcolor,
-                                                size: 25,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox(),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Wrap(
-                              alignment: WrapAlignment.spaceAround,
+                              alignment: WrapAlignment.start,
                               children: [
+                                widget.userdetails["app_direct_sale"]
+                                            .toString() ==
+                                        "1"
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          slideRightWidget(
+                                              newPage: AddSalesScreen(
+                                                userid: widget
+                                                    .userdetails["userid"]
+                                                    .toString(),
+                                              ),
+                                              context: context);
+                                        },
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.2,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              10,
+                                          child: Card(
+                                            elevation: 10,
+                                            semanticContainer: true,
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 10),
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons
+                                                        .fileCirclePlus,
+                                                    color: API.appcolor,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  child: Text(
+                                                    "Direct Sale",
+                                                    style: TextStyle(
+                                                        color: API.textcolor,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                )),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 20),
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons.angleRight,
+                                                    color: API.appcolor,
+                                                    size: 25,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(),
                                 widget.userdetails["app_sales"].toString() ==
                                         "1"
                                     ? GestureDetector(
@@ -660,6 +664,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .symmetric(horizontal: 8),
                                                   child: Text(
                                                     "Inventory",
+                                                    style: TextStyle(
+                                                        color: API.textcolor,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                widget.userdetails["app_store"].toString() ==
+                                        "1"
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          slideRightWidget(
+                                              newPage: CurrentStock(
+                                                token: widget
+                                                    .userdetails["token"]
+                                                    .toString(),
+                                                defaultwarehouseid: widget
+                                                    .userdetails[
+                                                        "default_warehouse_id"]
+                                                    .toString(),
+                                                defaultwarehousename: widget
+                                                    .userdetails[
+                                                        "default_warehouse_name"]
+                                                    .toString(),
+                                              ),
+                                              context: context);
+                                        },
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.2,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              10,
+                                          child: Card(
+                                            elevation: 10,
+                                            semanticContainer: true,
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 10),
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons.cubes,
+                                                    color: API.appcolor,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  child: Text(
+                                                    "Current Stock",
                                                     style: TextStyle(
                                                         color: API.textcolor,
                                                         fontSize: 13,

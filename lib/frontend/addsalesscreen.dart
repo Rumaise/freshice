@@ -271,7 +271,7 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                         fontWeight: FontWeight.w300,
                                         fontSize: 11),
                                     contentPadding: const EdgeInsets.fromLTRB(
-                                        20.0, 10.0, 20.0, 10.0),
+                                        20.0, 5.0, 20.0, 5.0),
                                     hintText: "Select Customer",
                                     border: OutlineInputBorder(
                                         borderRadius:
@@ -484,6 +484,10 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                 "cost_rate": productlist.costrate.toString(),
                                 "selling_price":
                                     productlist.sellingprice.toString(),
+                                "selling_price_controller":
+                                    TextEditingController(
+                                        text: productlist.sellingprice
+                                            .toString()),
                                 "arr_units": productlist.arrunits,
                                 "quantity": "1",
                                 "quantity_controller":
@@ -538,7 +542,7 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                             height: MediaQuery.of(context)
                                                     .size
                                                     .height /
-                                                8,
+                                                4.3,
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
@@ -553,7 +557,8 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .height /
-                                                              10,
+                                                              5,
+                                                      // color: Colors.red,
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -602,25 +607,25 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                                                   ),
                                                                 ),
                                                               ),
-                                                              const VerticalDivider(),
-                                                              Container(
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width /
-                                                                    4,
-                                                                child: Text(
-                                                                  "Price : ${double.parse(shoppingcart[(shoppingcart.length - 1) - index]["selling_price"].toString()).toStringAsFixed(2)}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          12,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500),
-                                                                ),
-                                                              ),
+                                                              // const VerticalDivider(),
+                                                              // Container(
+                                                              //   width: MediaQuery.of(
+                                                              //               context)
+                                                              //           .size
+                                                              //           .width /
+                                                              //       4,
+                                                              //   child: Text(
+                                                              //     "Price : ${double.parse(shoppingcart[(shoppingcart.length - 1) - index]["selling_price"].toString()).toStringAsFixed(2)}",
+                                                              //     style: const TextStyle(
+                                                              //         color: Colors
+                                                              //             .black,
+                                                              //         fontSize:
+                                                              //             12,
+                                                              //         fontWeight:
+                                                              //             FontWeight
+                                                              //                 .w500),
+                                                              //   ),
+                                                              // ),
                                                             ],
                                                           ),
                                                         ),
@@ -706,244 +711,242 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
-                                                                    .spaceBetween,
+                                                                    .start,
                                                             children: [
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  showModalBottomSheet(
-                                                                      context:
-                                                                          context,
-                                                                      isScrollControlled:
-                                                                          true,
-                                                                      isDismissible:
-                                                                          false,
-                                                                      builder:
-                                                                          (context) {
-                                                                        return StatefulBuilder(builder: (BuildContext
-                                                                                context,
-                                                                            StateSetter
-                                                                                setSheetState) {
-                                                                          return Padding(
-                                                                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                                              child: SingleChildScrollView(
-                                                                                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                                                                Container(
-                                                                                  height: 30,
-                                                                                  width: MediaQuery.of(context).size.width,
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        "Choose unit",
-                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 14, fontWeight: FontWeight.w300),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                Divider(
-                                                                                  height: 5,
-                                                                                  indent: 30,
-                                                                                  endIndent: 30,
-                                                                                ),
-                                                                                Wrap(
-                                                                                  children: jsonDecode(shoppingcart[(shoppingcart.length - 1) - index]["arr_units"]).map<Widget>((e) {
-                                                                                    return Column(
-                                                                                      children: [
-                                                                                        Container(
-                                                                                          width: MediaQuery.of(context).size.width,
-                                                                                          child: ListTile(
-                                                                                            onTap: () {
-                                                                                              setSheetState(() {
-                                                                                                shoppingcart[(shoppingcart.length - 1) - index]["unit_id"] = e["id"].toString();
-                                                                                                shoppingcart[(shoppingcart.length - 1) - index]["unit_name"] = e["unit_name"].toString();
-                                                                                                shoppingcart[(shoppingcart.length - 1) - index]["unit_factor"] = e["unit_factor"].toString();
-                                                                                                shoppingcart[(shoppingcart.length - 1) - index]["selling_price"] = e["unit_price"].toString();
-                                                                                              });
-                                                                                              Navigator.pop(context);
-                                                                                              setState(() {
-                                                                                                updateproductItem(shoppingcart, (shoppingcart.length - 1) - index);
-                                                                                              });
-                                                                                            },
-                                                                                            title: Column(
-                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                              children: [
-                                                                                                Text(
-                                                                                                  "Unit".toString(),
-                                                                                                  style: TextStyle(color: API.buttoncolor, fontSize: 11, fontWeight: FontWeight.w300),
-                                                                                                ),
-                                                                                                Text(
-                                                                                                  e["unit_name"].toString(),
-                                                                                                  style: TextStyle(color: API.buttoncolor, fontSize: 14, fontWeight: FontWeight.w500),
-                                                                                                ),
-                                                                                                SizedBox(
-                                                                                                  height: 3,
-                                                                                                )
-                                                                                              ],
-                                                                                            ),
-                                                                                            subtitle: Row(
-                                                                                              children: [
-                                                                                                Container(
-                                                                                                  width: MediaQuery.of(context).size.width / 3.5,
-                                                                                                  child: Column(
-                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                    children: [
-                                                                                                      Text(
-                                                                                                        "Factor".toString(),
-                                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 11, fontWeight: FontWeight.w300),
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        e["unit_factor"].toString(),
-                                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 13, fontWeight: FontWeight.w400),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                                Container(
-                                                                                                  width: MediaQuery.of(context).size.width / 3.5,
-                                                                                                  child: Column(
-                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                    children: [
-                                                                                                      Text(
-                                                                                                        "Price".toString(),
-                                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 11, fontWeight: FontWeight.w300),
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        e["unit_price"].toString(),
-                                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 13, fontWeight: FontWeight.w400),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                )
-                                                                                              ],
-                                                                                            ),
-                                                                                            trailing: shoppingcart[(shoppingcart.length - 1) - index]["unit_id"].toString() == e["id"].toString()
-                                                                                                ? Icon(
-                                                                                                    Icons.check_circle_outline_rounded,
-                                                                                                    color: Colors.green,
-                                                                                                  )
-                                                                                                : Icon(
-                                                                                                    Icons.keyboard_arrow_right_rounded,
-                                                                                                    color: Colors.grey,
-                                                                                                  ),
-                                                                                          ),
-                                                                                        ),
-                                                                                        Divider(
-                                                                                          height: 5,
-                                                                                        )
-                                                                                      ],
-                                                                                    );
-                                                                                  }).toList(),
-                                                                                )
-                                                                              ])));
-                                                                        });
-                                                                      });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width /
-                                                                      4,
-                                                                  height: 30,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Color
-                                                                        .fromRGBO(
-                                                                            248,
-                                                                            248,
-                                                                            253,
-                                                                            1),
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      color: API
-                                                                          .bordercolor,
-                                                                    ),
-                                                                  ),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Expanded(
-                                                                          child:
-                                                                              Container(
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.only(left: 5),
-                                                                          child:
-                                                                              Text(
-                                                                            shoppingcart[(shoppingcart.length - 1) - index]["unit_name"].toString(),
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: const TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontSize: 12,
-                                                                                fontWeight: FontWeight.w400),
-                                                                          ),
-                                                                        ),
-                                                                      )),
-                                                                      Icon(
-                                                                        Icons
-                                                                            .keyboard_arrow_down_outlined,
-                                                                        size:
-                                                                            23,
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                width: 120,
-                                                                height: 35,
-                                                                child: Row(
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            10),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
                                                                   children: [
+                                                                    Text(
+                                                                      "Unit",
+                                                                      style: const TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              10,
+                                                                          fontWeight:
+                                                                              FontWeight.w400),
+                                                                    ),
                                                                     GestureDetector(
                                                                       onTap:
                                                                           () {
-                                                                        if (int.parse(shoppingcart[(shoppingcart.length - 1) -
-                                                                                index]["quantity"]) >
-                                                                            0) {
-                                                                          if (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) ==
-                                                                              1) {
-                                                                            setState(() {
-                                                                              shoppingcart.remove(shoppingcart[(shoppingcart.length - 1) - index]);
+                                                                        showModalBottomSheet(
+                                                                            context:
+                                                                                context,
+                                                                            isScrollControlled:
+                                                                                true,
+                                                                            isDismissible:
+                                                                                false,
+                                                                            builder:
+                                                                                (context) {
+                                                                              return StatefulBuilder(builder: (BuildContext context, StateSetter setSheetState) {
+                                                                                return Padding(
+                                                                                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                                                    child: SingleChildScrollView(
+                                                                                        child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                                                                      Container(
+                                                                                        height: 30,
+                                                                                        width: MediaQuery.of(context).size.width,
+                                                                                        child: Row(
+                                                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                                                          children: [
+                                                                                            Text(
+                                                                                              "Choose unit",
+                                                                                              style: TextStyle(color: API.buttoncolor, fontSize: 14, fontWeight: FontWeight.w300),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                      Divider(
+                                                                                        height: 5,
+                                                                                        indent: 30,
+                                                                                        endIndent: 30,
+                                                                                      ),
+                                                                                      Wrap(
+                                                                                        children: jsonDecode(shoppingcart[(shoppingcart.length - 1) - index]["arr_units"]).map<Widget>((e) {
+                                                                                          return Column(
+                                                                                            children: [
+                                                                                              Container(
+                                                                                                width: MediaQuery.of(context).size.width,
+                                                                                                child: ListTile(
+                                                                                                  onTap: () {
+                                                                                                    setSheetState(() {
+                                                                                                      shoppingcart[(shoppingcart.length - 1) - index]["unit_id"] = e["id"].toString();
+                                                                                                      shoppingcart[(shoppingcart.length - 1) - index]["unit_name"] = e["unit_name"].toString();
+                                                                                                      shoppingcart[(shoppingcart.length - 1) - index]["unit_factor"] = e["unit_factor"].toString();
+                                                                                                      shoppingcart[(shoppingcart.length - 1) - index]["selling_price"] = e["unit_price"].toString();
+                                                                                                      shoppingcart[(shoppingcart.length - 1) - index]["selling_price_controller"] = TextEditingController(text: e["unit_price"].toString());
+                                                                                                    });
+                                                                                                    Navigator.pop(context);
+                                                                                                    setState(() {
+                                                                                                      updateproductItem(shoppingcart, (shoppingcart.length - 1) - index);
+                                                                                                    });
+                                                                                                  },
+                                                                                                  title: Column(
+                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                    children: [
+                                                                                                      Text(
+                                                                                                        "Unit".toString(),
+                                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 11, fontWeight: FontWeight.w300),
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        e["unit_name"].toString(),
+                                                                                                        style: TextStyle(color: API.buttoncolor, fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                                      ),
+                                                                                                      SizedBox(
+                                                                                                        height: 3,
+                                                                                                      )
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  subtitle: Row(
+                                                                                                    children: [
+                                                                                                      Container(
+                                                                                                        width: MediaQuery.of(context).size.width / 3.5,
+                                                                                                        child: Column(
+                                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                          children: [
+                                                                                                            Text(
+                                                                                                              "Factor".toString(),
+                                                                                                              style: TextStyle(color: API.buttoncolor, fontSize: 11, fontWeight: FontWeight.w300),
+                                                                                                            ),
+                                                                                                            Text(
+                                                                                                              e["unit_factor"].toString(),
+                                                                                                              style: TextStyle(color: API.buttoncolor, fontSize: 13, fontWeight: FontWeight.w400),
+                                                                                                            ),
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                      Container(
+                                                                                                        width: MediaQuery.of(context).size.width / 3.5,
+                                                                                                        child: Column(
+                                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                          children: [
+                                                                                                            Text(
+                                                                                                              "Price".toString(),
+                                                                                                              style: TextStyle(color: API.buttoncolor, fontSize: 11, fontWeight: FontWeight.w300),
+                                                                                                            ),
+                                                                                                            Text(
+                                                                                                              e["unit_price"].toString(),
+                                                                                                              style: TextStyle(color: API.buttoncolor, fontSize: 13, fontWeight: FontWeight.w400),
+                                                                                                            ),
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                      )
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  trailing: shoppingcart[(shoppingcart.length - 1) - index]["unit_id"].toString() == e["id"].toString()
+                                                                                                      ? Icon(
+                                                                                                          Icons.check_circle_outline_rounded,
+                                                                                                          color: Colors.green,
+                                                                                                        )
+                                                                                                      : Icon(
+                                                                                                          Icons.keyboard_arrow_right_rounded,
+                                                                                                          color: Colors.grey,
+                                                                                                        ),
+                                                                                                ),
+                                                                                              ),
+                                                                                              Divider(
+                                                                                                height: 5,
+                                                                                              )
+                                                                                            ],
+                                                                                          );
+                                                                                        }).toList(),
+                                                                                      )
+                                                                                    ])));
+                                                                              });
                                                                             });
-                                                                          } else {
-                                                                            setState(() {
-                                                                              shoppingcart[(shoppingcart.length - 1) - index]["quantity"] = (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) - 1).toString();
-                                                                              shoppingcart[(shoppingcart.length - 1) - index]["quantity_controller"].text = shoppingcart[(shoppingcart.length - 1) - index]["quantity"].toString();
-                                                                              updateproductItem(shoppingcart, (shoppingcart.length - 1) - index);
-                                                                            });
-                                                                          }
-                                                                        }
                                                                       },
                                                                       child:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .remove,
-                                                                        color: Colors
-                                                                            .black,
-                                                                        size:
-                                                                            23,
+                                                                          Container(
+                                                                        width:
+                                                                            MediaQuery.of(context).size.width /
+                                                                                4,
+                                                                        height:
+                                                                            30,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color: Color.fromRGBO(
+                                                                              248,
+                                                                              248,
+                                                                              253,
+                                                                              1),
+                                                                          border:
+                                                                              Border.all(
+                                                                            color:
+                                                                                API.bordercolor,
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            Row(
+                                                                          children: [
+                                                                            Expanded(
+                                                                                child: Container(
+                                                                              child: Padding(
+                                                                                padding: const EdgeInsets.only(left: 5),
+                                                                                child: Text(
+                                                                                  shoppingcart[(shoppingcart.length - 1) - index]["unit_name"].toString(),
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+                                                                                ),
+                                                                              ),
+                                                                            )),
+                                                                            Icon(
+                                                                              Icons.keyboard_arrow_down_outlined,
+                                                                              size: 23,
+                                                                            )
+                                                                          ],
+                                                                        ),
                                                                       ),
                                                                     ),
-                                                                    Expanded(
-                                                                        child:
-                                                                            Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          vertical:
-                                                                              3),
-                                                                      child:
-                                                                          Container(
-                                                                        child: TextFormField(
-                                                                            key: ValueKey(((shoppingcart.length - 1) - index).toString()),
-                                                                            controller: shoppingcart[(shoppingcart.length - 1) - index]["quantity_controller"],
-                                                                            keyboardType: TextInputType.number,
-                                                                            cursorColor: Colors.grey[400],
-                                                                            textAlign: TextAlign.center,
-                                                                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
-                                                                            style: TextStyle(
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Price",
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            10,
+                                                                        fontWeight:
+                                                                            FontWeight.w400),
+                                                                  ),
+                                                                  Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
+                                                                        4,
+                                                                    height: 30,
+                                                                    child:
+                                                                        TextFormField(
+                                                                            key: ValueKey(((shoppingcart.length - 1) - index)
+                                                                                .toString()),
+                                                                            controller: shoppingcart[(shoppingcart.length - 1) - index][
+                                                                                "selling_price_controller"],
+                                                                            keyboardType: TextInputType
+                                                                                .number,
+                                                                            cursorColor: Colors.grey[
+                                                                                400],
+                                                                            textAlign: TextAlign
+                                                                                .center,
+                                                                            inputFormatters: <TextInputFormatter>[
+                                                                              FilteringTextInputFormatter.digitsOnly,
+                                                                              LengthLimitingTextInputFormatter(6)
+                                                                            ],
+                                                                            style:
+                                                                                TextStyle(
                                                                               color: API.textcolor,
                                                                               fontSize: 14,
                                                                             ),
@@ -966,51 +969,162 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                                                                                 ),
                                                                                 hintStyle: const TextStyle(color: Color.fromRGBO(181, 184, 203, 1), fontWeight: FontWeight.w300, fontSize: 11),
                                                                                 contentPadding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-                                                                                hintText: "Qty",
+                                                                                hintText: "Price",
                                                                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(0.0))),
                                                                             onChanged: (val) {
                                                                               if (val.isEmpty) {
-                                                                                API.showSnackBar("failed", "Quantity should not be empty", context);
+                                                                                API.showSnackBar("failed", "Price should not be empty", context);
                                                                               } else {
                                                                                 setState(() {
-                                                                                  shoppingcart[(shoppingcart.length - 1) - index]["quantity"] = val.toString();
+                                                                                  shoppingcart[(shoppingcart.length - 1) - index]["selling_price"] = val.toString();
                                                                                   updateproductItem(shoppingcart, (shoppingcart.length - 1) - index);
                                                                                 });
                                                                               }
                                                                             }),
-                                                                      ),
-                                                                    )),
-                                                                    GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        setState(
-                                                                            () {
-                                                                          shoppingcart[(shoppingcart.length - 1) - index]
-                                                                              [
-                                                                              "quantity"] = (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) +
-                                                                                  1)
-                                                                              .toString();
-                                                                          shoppingcart[(shoppingcart.length - 1) - index]["quantity_controller"].text =
-                                                                              shoppingcart[(shoppingcart.length - 1) - index]["quantity"].toString();
-                                                                          updateproductItem(
-                                                                            shoppingcart,
-                                                                            (shoppingcart.length - 1) -
-                                                                                index,
-                                                                          );
-                                                                        });
-                                                                      },
-                                                                      child:
-                                                                          const Icon(
-                                                                        Icons
-                                                                            .add,
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Divider(
+                                                          thickness: 0.5,
+                                                          height: 10,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      8),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    "Qty",
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black,
-                                                                        size:
-                                                                            23,
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
+                                                                        fontSize:
+                                                                            10,
+                                                                        fontWeight:
+                                                                            FontWeight.w400),
+                                                                  ),
+                                                                  Container(
+                                                                    width: 120,
+                                                                    height: 35,
+                                                                    child: Row(
+                                                                      children: [
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            if (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) >
+                                                                                0) {
+                                                                              if (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) == 1) {
+                                                                                setState(() {
+                                                                                  shoppingcart.remove(shoppingcart[(shoppingcart.length - 1) - index]);
+                                                                                });
+                                                                              } else {
+                                                                                setState(() {
+                                                                                  shoppingcart[(shoppingcart.length - 1) - index]["quantity"] = (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) - 1).toString();
+                                                                                  shoppingcart[(shoppingcart.length - 1) - index]["quantity_controller"].text = shoppingcart[(shoppingcart.length - 1) - index]["quantity"].toString();
+                                                                                  updateproductItem(shoppingcart, (shoppingcart.length - 1) - index);
+                                                                                });
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                          child:
+                                                                              const Icon(
+                                                                            Icons.remove,
+                                                                            color:
+                                                                                Colors.black,
+                                                                            size:
+                                                                                23,
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                            child:
+                                                                                Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.symmetric(vertical: 3),
+                                                                          child:
+                                                                              Container(
+                                                                            child: TextFormField(
+                                                                                key: ValueKey(((shoppingcart.length - 1) - index).toString()),
+                                                                                controller: shoppingcart[(shoppingcart.length - 1) - index]["quantity_controller"],
+                                                                                keyboardType: TextInputType.number,
+                                                                                cursorColor: Colors.grey[400],
+                                                                                textAlign: TextAlign.center,
+                                                                                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
+                                                                                style: TextStyle(
+                                                                                  color: API.textcolor,
+                                                                                  fontSize: 14,
+                                                                                ),
+                                                                                decoration: InputDecoration(
+                                                                                    filled: true,
+                                                                                    fillColor: const Color.fromRGBO(248, 248, 253, 1),
+                                                                                    enabledBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.circular(0.0),
+                                                                                      borderSide: BorderSide(
+                                                                                        color: API.bordercolor,
+                                                                                        width: 1.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    focusedBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.circular(0.0),
+                                                                                      borderSide: const BorderSide(
+                                                                                        color: Colors.green,
+                                                                                        width: 1.0,
+                                                                                      ),
+                                                                                    ),
+                                                                                    hintStyle: const TextStyle(color: Color.fromRGBO(181, 184, 203, 1), fontWeight: FontWeight.w300, fontSize: 11),
+                                                                                    contentPadding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+                                                                                    hintText: "Qty",
+                                                                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(0.0))),
+                                                                                onChanged: (val) {
+                                                                                  if (val.isEmpty) {
+                                                                                    API.showSnackBar("failed", "Quantity should not be empty", context);
+                                                                                  } else {
+                                                                                    setState(() {
+                                                                                      shoppingcart[(shoppingcart.length - 1) - index]["quantity"] = val.toString();
+                                                                                      updateproductItem(shoppingcart, (shoppingcart.length - 1) - index);
+                                                                                    });
+                                                                                  }
+                                                                                }),
+                                                                          ),
+                                                                        )),
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            setState(() {
+                                                                              shoppingcart[(shoppingcart.length - 1) - index]["quantity"] = (int.parse(shoppingcart[(shoppingcart.length - 1) - index]["quantity"]) + 1).toString();
+                                                                              shoppingcart[(shoppingcart.length - 1) - index]["quantity_controller"].text = shoppingcart[(shoppingcart.length - 1) - index]["quantity"].toString();
+                                                                              updateproductItem(
+                                                                                shoppingcart,
+                                                                                (shoppingcart.length - 1) - index,
+                                                                              );
+                                                                            });
+                                                                          },
+                                                                          child:
+                                                                              const Icon(
+                                                                            Icons.add,
+                                                                            color:
+                                                                                Colors.black,
+                                                                            size:
+                                                                                23,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               )
                                                             ],
                                                           ),

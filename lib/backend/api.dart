@@ -226,6 +226,59 @@ class API {
     }
   }
 
+  static Future<Map<String, dynamic>> getCurrentStockListAPI(String warehouseid,
+      String term, String token, BuildContext context) async {
+    print({"warehouse_id": warehouseid, "term": term});
+    final response = await post(
+        Uri.parse(
+          '${baseurl}Apistore/CurrentStock',
+        ),
+        headers: <String, String>{'token': token},
+        body: json.encode({"warehouse_id": warehouseid, "term": term}));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      dynamic requestresponse = jsonDecode(response.body);
+      print("========================================");
+      print("========================================");
+      print(requestresponse);
+      print("========================================");
+      print("========================================");
+      return requestresponse;
+    } else if (response.statusCode == 401) {
+      API.showSnackBar('failed', "User unauthorized", context);
+      pushWidgetWhileRemove(newPage: const LoginScreen(), context: context);
+      return {'status': 'failed', 'message': response.reasonPhrase.toString()};
+    } else {
+      return {'status': 'failed', 'message': response.reasonPhrase.toString()};
+    }
+  }
+
+  static Future<Map<String, dynamic>> getWarehouseListAPI(
+      String token, BuildContext context) async {
+    final response = await get(
+      Uri.parse(
+        '${baseurl}Apistore/WarehouseList',
+      ),
+      headers: <String, String>{'token': token},
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      dynamic requestresponse = jsonDecode(response.body);
+      print("========================================");
+      print("========================================");
+      print(requestresponse);
+      print("========================================");
+      print("========================================");
+      return requestresponse;
+    } else if (response.statusCode == 401) {
+      API.showSnackBar('failed', "User unauthorized", context);
+      pushWidgetWhileRemove(newPage: const LoginScreen(), context: context);
+      return {'status': 'failed', 'message': response.reasonPhrase.toString()};
+    } else {
+      return {'status': 'failed', 'message': response.reasonPhrase.toString()};
+    }
+  }
+
   static Future<Map<String, dynamic>> postSyncInvoicesAPI(
       String invoiceid,
       String customerid,
@@ -606,7 +659,10 @@ class API {
       String appcustomers,
       String appinventory,
       String appcloudsync,
-      String appdevicesettings) async {
+      String appdevicesettings,
+      String appstore,
+      String defaultwarehouseid,
+      String defaultwarehousename) async {
     SharedPreferences poscache = await SharedPreferences.getInstance();
     poscache.setString('userid', userid);
     poscache.setString('username', username);
@@ -625,6 +681,9 @@ class API {
     poscache.setString('app_inventory', appinventory);
     poscache.setString('app_cloud_sync', appcloudsync);
     poscache.setString('app_device_settings', appdevicesettings);
+    poscache.setString('app_store', appstore);
+    poscache.setString('default_warehouse_id', defaultwarehouseid);
+    poscache.setString('default_warehouse_name', defaultwarehousename);
     return {"status": "success"};
   }
 
@@ -648,6 +707,10 @@ class API {
       String? appinventory = poscache.getString('app_inventory');
       String? appcloudsync = poscache.getString('app_cloud_sync');
       String? appdevicesettings = poscache.getString('app_device_settings');
+      String? appstore = poscache.getString('app_store');
+      String? defaultwarehouseid = poscache.getString('default_warehouse_id');
+      String? defaultwarehousename =
+          poscache.getString('default_warehouse_name');
 
       return {
         'status': 'success',
@@ -667,7 +730,10 @@ class API {
         'app_customers': appcustomers,
         'app_inventory': appinventory,
         'app_cloud_sync': appcloudsync,
-        'app_device_settings': appdevicesettings
+        'app_device_settings': appdevicesettings,
+        'app_store': appstore,
+        'default_warehouse_id': defaultwarehouseid,
+        'default_warehouse_name': defaultwarehousename
       };
     } else {
       return {'status': 'failed', 'message': 'User not available'};

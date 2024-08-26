@@ -176,7 +176,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                 },
                                                 child: Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       horizontal: 10),
                                                   child: Container(
                                                     height: 25,
@@ -229,7 +229,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                   children: [
                                                     Padding(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           vertical: 5),
                                                       child: Text(
                                                         "Amount",
@@ -268,7 +268,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                   children: [
                                                     Padding(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           vertical: 5),
                                                       child: Text(
                                                         "VAT",
@@ -307,7 +307,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                   children: [
                                                     Padding(
                                                       padding: const EdgeInsets
-                                                              .symmetric(
+                                                          .symmetric(
                                                           vertical: 5),
                                                       child: Text(
                                                         "Total",

@@ -67,7 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     autologinresponse["app_customers"].toString(),
                     autologinresponse["app_inventory"].toString(),
                     autologinresponse["app_cloud_sync"].toString(),
-                    autologinresponse["app_device_settings"].toString())
+                    autologinresponse["app_device_settings"].toString(),
+                    autologinresponse["app_store"].toString(),
+                    autologinresponse["default_warehouse_id"].toString(),
+                    autologinresponse["default_warehouse_name"].toString())
                 .then((value) {
               if (value["status"] == "success") {
                 pushWidgetWhileRemove(
@@ -294,39 +297,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .toString(),
                                             response["user_data"]["customer_id"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["customer_name"]
+                                            response["user_data"]["customer_name"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["company_name"]
+                                            response["user_data"]["company_name"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["billing_address"]
+                                            response["user_data"]["billing_address"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["genral_phno"]
+                                            response["user_data"]["genral_phno"]
                                                 .toString(),
                                             response["user_data"]["trn_no"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["app_direct_sale"]
+                                            response["user_data"]["app_direct_sale"]
                                                 .toString(),
                                             response["user_data"]["app_sales"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["app_production"]
+                                            response["user_data"]["app_production"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["app_customers"]
+                                            response["user_data"]["app_customers"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["app_inventory"]
+                                            response["user_data"]["app_inventory"]
                                                 .toString(),
-                                            response["user_data"]
-                                                    ["app_cloud_sync"]
+                                            response["user_data"]["app_cloud_sync"]
                                                 .toString(),
                                             response["user_data"]
                                                     ["app_device_settings"]
+                                                .toString(),
+                                            response["user_data"]["app_store"]
+                                                .toString(),
+                                            response["user_data"]
+                                                    ["default_warehouse_id"]
+                                                .toString(),
+                                            response["user_data"]
+                                                    ["default_warehouse_name"]
                                                 .toString())
                                         .then((value) {
                                       if (value["status"] == "success") {
@@ -369,6 +371,26 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Text(
+                              "V ${API.buildversion}",
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Text(
+                              "19 / 08 / 2024",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          )
                         ],
                       ),
                     ),
