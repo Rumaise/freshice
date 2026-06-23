@@ -65,66 +65,64 @@ class Sunmi {
       String customer, String customertrn, String emirate) async {
     await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
     await SunmiPrinter.setCustomFontSize(18);
-    await SunmiPrinter.printRow(cols: [
-      ColumnMaker(
-        text: 'Inv Id    :',
-        width: 13,
-        align: SunmiPrintAlign.LEFT,
-      ),
-      ColumnMaker(
-        text: "$invoiceid",
-        width: 26,
-        align: SunmiPrintAlign.LEFT,
-      ),
-    ]);
-    await SunmiPrinter.printRow(cols: [
-      ColumnMaker(
-        text: 'Inv Date  :',
-        width: 13,
-        align: SunmiPrintAlign.LEFT,
-      ),
-      ColumnMaker(
-        text: "$invoicedate",
-        width: 26,
-        align: SunmiPrintAlign.LEFT,
-      ),
-    ]);
-    await SunmiPrinter.printRow(cols: [
-      ColumnMaker(
-        text: 'Customer  :',
-        width: 13,
-        align: SunmiPrintAlign.LEFT,
-      ),
-      ColumnMaker(
-        text: "$customer",
-        width: 26,
-        align: SunmiPrintAlign.LEFT,
-      ),
-    ]);
-    await SunmiPrinter.printRow(cols: [
-      ColumnMaker(
-        text: 'Emirate   :',
-        width: 13,
-        align: SunmiPrintAlign.LEFT,
-      ),
-      ColumnMaker(
-        text: "$emirate",
-        width: 26,
-        align: SunmiPrintAlign.LEFT,
-      ),
-    ]);
-    await SunmiPrinter.printRow(cols: [
-      ColumnMaker(
-        text: 'TRN       :',
-        width: 13,
-        align: SunmiPrintAlign.LEFT,
-      ),
-      ColumnMaker(
-        text: "$customertrn",
-        width: 26,
-        align: SunmiPrintAlign.LEFT,
-      ),
-    ]);
+    await _printLabeledRow('Inv Id    :', invoiceid);
+    await _printLabeledRow('Inv Date  :', invoicedate);
+    await _printLabeledRow('Customer  :', customer);
+    await _printLabeledRow('Emirate   :', emirate);
+    await _printLabeledRow('TRN       :', customertrn);
+  }
+
+  // Prints a label/value row, wrapping [value] onto multiple lines when it is
+  // longer than [valueWidth]. The label only appears on the first line; the
+  // label column stays blank on the wrapped continuation lines.
+  Future<void> _printLabeledRow(String label, String value,
+      {int labelWidth = 13, int valueWidth = 26}) async {
+    final lines = _wrapText(value, valueWidth);
+    if (lines.isEmpty) lines.add('');
+    for (var i = 0; i < lines.length; i++) {
+      await SunmiPrinter.printRow(cols: [
+        ColumnMaker(
+          text: i == 0 ? label : '',
+          width: labelWidth,
+          align: SunmiPrintAlign.LEFT,
+        ),
+        ColumnMaker(
+          text: lines[i],
+          width: valueWidth,
+          align: SunmiPrintAlign.LEFT,
+        ),
+      ]);
+    }
+  }
+
+  // Splits [text] into chunks no longer than [width], breaking on word
+  // boundaries where possible and hard-splitting words longer than [width].
+  List<String> _wrapText(String text, int width) {
+    final words = text.trim().split(RegExp(r'\s+'));
+    final lines = <String>[];
+    var current = '';
+    for (final word in words) {
+      if (word.isEmpty) continue;
+      var w = word;
+      while (w.length > width) {
+        if (current.isNotEmpty) {
+          lines.add(current);
+          current = '';
+        }
+        lines.add(w.substring(0, width));
+        w = w.substring(width);
+      }
+      if (current.isEmpty) {
+        current = w;
+      } else if (current.length + 1 + w.length <= width) {
+        current = '$current $w';
+      } else {
+        lines.add(current);
+        current = w;
+      }
+    }
+    if (current.isNotEmpty) lines.add(current);
+    return lines;
   }
 
   Future<void> printQRCode(String text) async {

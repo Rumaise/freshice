@@ -34,15 +34,15 @@ class API {
   static Color bordercolor = Colors.black;
   static double appfontsize = 13;
 
-  static String baseurl = "https://blueskyerp.com/freshice/index.php?r=";
-  static String fileurl = "https://blueskyerp.com/freshice/";
+  // static String baseurl = "https://bluesky-erp.com/freshice/index.php?r=";
+  // static String fileurl = "https://bluesky-erp.com/freshice/";
 
-  // static String baseurl = "https://blueskycosmos.com/freshice/index.php?r=";
-  // static String fileurl = "https://blueskycosmos.com/freshice/";
+  static String baseurl = "https://blueskycosmos.com/freshice/index.php?r=";
+  static String fileurl = "https://blueskycosmos.com/freshice/";
 
   static String devicetype = "android";
   static String buildversion = "1.0.1";
-  static String updateddate = "29 / 11 / 2025";
+  static String updateddate = "23 / 06 / 2026";
 
   static String printertype = "2";
 
@@ -1234,107 +1234,78 @@ class API {
             height: PosTextSize.size2));
     bytes += ticket.text("");
 
-    bytes += ticket.row([
-      PosColumn(
-          width: 4,
-          text: "INVOICE NO",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left)),
-      PosColumn(
-          width: 1,
-          text: ":",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.center)),
-      PosColumn(
-          text: details["invoice_no"].toString(),
-          width: 7,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left, bold: true)),
-    ]);
-    bytes += ticket.row([
-      PosColumn(
-          width: 4,
-          text: "INVOICE DATE",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left)),
-      PosColumn(
-          width: 1,
-          text: ":",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.center)),
-      PosColumn(
-          text: details["invoice_date"].toString(),
-          width: 7,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left, bold: true)),
-    ]);
-    bytes += ticket.row([
-      PosColumn(
-          width: 4,
-          text: "CUSTOMER NAME",
-          styles: const PosStyles(align: PosAlign.left)),
-      PosColumn(
-          width: 1,
-          text: ":",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.center)),
-      PosColumn(
-          text: details["customer_name"].toString(),
-          width: 7,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left, bold: true)),
-    ]);
-    bytes += ticket.row([
-      PosColumn(
-          width: 4,
-          text: "CUSTOMER TRN NO",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left)),
-      PosColumn(
-          width: 1,
-          text: ":",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.center)),
-      PosColumn(
-          text: details["customer_trn_no"].toString(),
-          width: 7,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left, bold: true)),
-    ]);
-    bytes += ticket.row([
-      PosColumn(
-          width: 4,
-          text: "SALESMAN",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left)),
-      PosColumn(
-          width: 1,
-          text: ":",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.center)),
-      PosColumn(
-          text: details["salesman"].toString(),
-          width: 7,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left, bold: true)),
-    ]);
-     bytes += ticket.row([
-      PosColumn(
-          width: 4,
-          text: "PAYMENT TYPE",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left)),
-      PosColumn(
-          width: 1,
-          text: ":",
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.center)),
-      PosColumn(
-          text: details["payment_type"].toString(),
-          width: 7,
-          styles: const PosStyles(
-              fontType: PosFontType.fontA, align: PosAlign.left, bold: true)),
-    ]);
+    // Characters available in the width-7 value column for this paper size.
+    // esc_pos uses a 12-column grid (~48 chars on 80mm, ~32 on 58mm) and does
+    // NOT auto-wrap column text, so we wrap it ourselves.
+    final int maxChars = paper == PaperSize.mm58 ? 32 : 48;
+    final int valueChars = maxChars * 7 ~/ 12;
+
+    // Split [text] into chunks no longer than [width], breaking on word
+    // boundaries where possible and hard-splitting words longer than [width].
+    List<String> wrapText(String text, int width) {
+      final words = text.trim().split(RegExp(r'\s+'));
+      final lines = <String>[];
+      var current = '';
+      for (final word in words) {
+        if (word.isEmpty) continue;
+        var w = word;
+        while (w.length > width) {
+          if (current.isNotEmpty) {
+            lines.add(current);
+            current = '';
+          }
+          lines.add(w.substring(0, width));
+          w = w.substring(width);
+        }
+        if (current.isEmpty) {
+          current = w;
+        } else if (current.length + 1 + w.length <= width) {
+          current = '$current $w';
+        } else {
+          lines.add(current);
+          current = w;
+        }
+      }
+      if (current.isNotEmpty) lines.add(current);
+      if (lines.isEmpty) lines.add('');
+      return lines;
+    }
+
+    // Prints a label/value info row, wrapping the value onto extra rows when it
+    // is longer than the value column. Label and ":" only show on the first row.
+    List<int> infoRow(String label, String value) {
+      final lines = wrapText(value, valueChars);
+      final List<int> out = [];
+      for (var i = 0; i < lines.length; i++) {
+        out.addAll(ticket.row([
+          PosColumn(
+              width: 4,
+              text: i == 0 ? label : '',
+              styles: const PosStyles(
+                  fontType: PosFontType.fontA, align: PosAlign.left)),
+          PosColumn(
+              width: 1,
+              text: i == 0 ? ':' : '',
+              styles: const PosStyles(
+                  fontType: PosFontType.fontA, align: PosAlign.center)),
+          PosColumn(
+              text: lines[i],
+              width: 7,
+              styles: const PosStyles(
+                  fontType: PosFontType.fontA,
+                  align: PosAlign.left,
+                  bold: true)),
+        ]));
+      }
+      return out;
+    }
+
+    bytes += infoRow("INVOICE NO", details["invoice_no"].toString());
+    bytes += infoRow("INVOICE DATE", details["invoice_date"].toString());
+    bytes += infoRow("CUSTOMER NAME", details["customer_name"].toString());
+    bytes += infoRow("CUSTOMER TRN NO", details["customer_trn_no"].toString());
+    bytes += infoRow("SALESMAN", details["salesman"].toString());
+    bytes += infoRow("PAYMENT TYPE", details["payment_type"].toString());
 
 
     bytes += ticket.hr(
